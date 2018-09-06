@@ -1,23 +1,13 @@
-import React, { Component } from "react";
-import {
-  Platform,
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Modal,
-  Image,
-  ToastAndroid,
-  AsyncStorage,
-  Alert
-} from "react-native";
+import React, {Component} from "react";
+import {StyleSheet, View, Alert} from "react-native";
 
-import {
-  Content
-} from "native-base";
+import {Content} from "native-base";
 
+import {Actions} from "react-native-router-flux";
 
-import { Actions } from "react-native-router-flux";
+import axios from "axios";
+
+import Api from "../api/index"
 
 import Logo from "@components/logo";
 import GoogleButton from "@components/google-button";
@@ -32,54 +22,53 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      login: "",
       password: ""
     };
   }
-  componentWillMount = () => {
-  };
+  componentWillMount = () => {};
 
-  async componentDidMount() {
-
-  }
+  async componentDidMount() {}
   render() {
     return (
-      <Container
-        back={false}>
+      <Container back={false}>
         <View>
-          <Logo size={200} />
+          <Logo size={150}/>
           <Input
-            placeholder={Language.get("email")}
-            onChangeText={text => this.setState({ email: text })}
-            value={this.state.email} />
+            placeholder={Language.get("login")}
+            onChangeText={text => this.setState({login: text})}
+            value={this.state.login}/>
           <Input
             placeholder={Language.get("password")}
             secureTextEntry={true}
-            onChangeText={text => this.setState({ password: text })}
-            value={this.state.password} />
+            onChangeText={text => this.setState({password: text})}
+            value={this.state.password}/>
         </View>
         <Content contentContainerStyle={styles.buttonContener}>
-          <Button text={Language.get("login")} onPress={() => this.login()} />
-          <FacebookButton
-            text={Language.get("signFace")}
-            onPress={() => this.facebookLogin()} />
-          <GoogleButton
-            text={Language.get("signGoogle")}
-            onPress={() => this.googleLogin()} />
+          <Button text={Language.get("login")} onPress={() => this.login()}/>
+          <Button text={Language.get("register")} onPress={() => Actions.Register()} />
         </Content>
       </Container>
     );
   }
-  async saveloginhaslo(login, password) {
-  }
-  googleLogin = async () => {
-  };
-  facebookLogin = async () => {
-
-  };
+  async saveloginhaslo(login, password) {}
+  
+  googleLogin = async() => {};
+  facebookLogin = async() => {};
 
   login() {
-    Actions.List();
+    Api
+      .login(this.state.login, this.state.password)
+      .then(response => {
+        if (response.status === 200){
+          Actions.List();
+        }else{
+          alert(response.message);
+        }
+      })
+      .catch(error => {
+        alert(error);
+      })
   }
 }
 

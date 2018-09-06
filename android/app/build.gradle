@@ -150,7 +150,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-svg')
+    implementation project(':react-native-svg')
     implementation project(':react-native-blur')
     implementation project(':react-native-linear-gradient')
     implementation fileTree(dir: "libs", include: ["*.jar"])

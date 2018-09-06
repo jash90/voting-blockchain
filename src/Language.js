@@ -20,14 +20,14 @@ export default class Language {
       en: "Sign In",
       pl: "Logowanie"
     },
-    email: {
-      pl: "Email"
+    login: {
+      pl: "Login"
     },
     password: {
       en: "Password",
       pl: "Hasło"
     },
-    login: {
+    logining: {
       en: "Log in",
       pl: "Zaloguj"
     },
@@ -100,7 +100,7 @@ export default class Language {
       pl: "Miasto jest wymagane."
     },
     appName: {
-      pl : "VotingBlockchain"
+      pl: "VotingBlockchain"
     },
     editProfile: {
       en: "Edit Profile",
@@ -154,11 +154,22 @@ export default class Language {
       en: "metro",
       pl: "metro"
     },
-    checkedAnswer:{
-      pl:'Wybrałeś opowiedź : '
+    checkedAnswer: {
+      pl: 'Wybrałeś opowiedź : '
     },
-    soonResult:{
-      pl:'Wyniki ankiety wkrótce.'
+    soonResult: {
+      pl: 'Wyniki ankiety wkrótce.'
+    },
+    firstname: {
+      pl: "Imię",
+      en: "Firstname"
+    },
+    lastname: {
+      pl: "Nazwisko",
+      en: "Lastname"
+    },
+    email:{
+      pl:"email"
     }
   };
 }

@@ -38,10 +38,8 @@ class Container extends Component {
     renderChildren() {
         if (this.props.scrollView) {
             return (
-                <ScrollView
-                    style={this.props.styleContent
-                    ? this.props.styleContent
-                    : styles.fullStyle}>
+                <Content
+                    style={styles.fullStyle}>
                     <View style={{ position: 'absolute', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
                         <Image
                             ref={(img) => {
@@ -63,14 +61,14 @@ class Container extends Component {
                         blurType="xlight"
                         blurAmount={100} />
                     {this.props.children}
-                    </ScrollView>
+</Content>
             );
         } else {
             return (
                 <View
                     style={this.props.styleContent
                     ? this.props.styleContent
-                    : styles.fullStyle}>
+                        : [styles.fullStyle, { justifyContent: 'flex-start',}]}>
                     <View style={{position:'absolute', width:'100%', height:'100%', justifyContent:'center',alignItems:'center'}}>
                     <Image
                         ref={(img) => {
@@ -106,7 +104,6 @@ var styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Color.primaryColor,
         flexDirection:'column',
-        justifyContent:'flex-start',
     },
     absolute: {
         alignSelf: 'center',
