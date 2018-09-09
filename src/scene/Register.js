@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Alert} from "react-native";
+import {StyleSheet, View, Alert, TouchableOpacity, Text} from "react-native";
 
 import {Content} from "native-base";
 
@@ -17,6 +17,7 @@ import Input from "@components/input";
 import Color from "../Color";
 import Language from "../Language";
 import Container from "@components/container";
+import Autocomplete from "react-native-autocomplete-input";
 
 export default class Register extends Component {
     constructor(props) {
@@ -27,7 +28,9 @@ export default class Register extends Component {
             email: "jan@kowalski.pl",
             firstname: "Jan",
             lastname: "Kowalski",
-            repeatPassword: "123123"
+            repeatPassword: "123123",
+            query: "",
+            userRoles: []
         };
     }
     componentDidMount = () => {
@@ -35,7 +38,8 @@ export default class Register extends Component {
             .getUserRole()
             .then(response => {
                 if (response.status === 200) {
-                    alert(JSON.stringify(response));
+                    this.setState({userRoles: response.data});
+                    console.log(response.data);
                 } else {
                     alert(JSON.stringify(response.message.detail));
                 }
@@ -65,6 +69,32 @@ export default class Register extends Component {
                         placeholder={Language.get("email")}
                         onChangeText={text => this.setState({email: text})}
                         value={this.state.email}/>
+                    <Autocomplete
+                        inputContainerStyle={{borderColor:"transparent"}}
+                        underlineColorAndroid={"transparent"}
+                        style={{
+                        borderRadius: 20,
+                        width: "90%",
+                        height: 60,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "white",
+                        paddingLeft: 15,
+                        paddingRight: 15,
+                        fontSize: 20,
+                        alignSelf: "center",
+                        marginLeft: 10,
+                        marginRight:10,
+                        borderColor:"transparent"
+                    }}
+                        data={this.getData()}
+                        defaultValue={this.state.query}
+                        onChangeText={text => this.setState({query: text})}
+                        renderItem={item => (
+                        <TouchableOpacity onPress={() => this.setState({query: item})}>
+                            <Text>{item.name}</Text>
+                        </TouchableOpacity>
+                    )}/>
                     <Input
                         placeholder={Language.get("login")}
                         onChangeText={text => this.setState({login: text})}
@@ -90,11 +120,18 @@ export default class Register extends Component {
             </Container>
         );
     }
-    async saveloginhaslo(login, password) {}
-
-    googleLogin = async() => {};
-    facebookLogin = async() => {};
-
+    getData() {
+        const {userRoles, query} = this.state;
+        if (query.length > 0) {
+            return userRoles.filter(value => {
+                return String(value.name)
+                    .toLowerCase()
+                    .includes(String(query).toLowerCase())
+            })
+        } else {
+            return [];
+        }
+    }
     register() {
         Api
             .register(this.state.login, this.state.password, null, this.state.firstname, this.state.lastname, this.state.email)
