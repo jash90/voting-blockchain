@@ -18,6 +18,9 @@ import Color from "../Color";
 import Language from "../Language";
 import Container from "@components/container";
 import Autocomplete from "react-native-autocomplete-input";
+import {createIconSetFromIcoMoon} from "react-native-vector-icons";
+import selection from "../../android/app/src/main/assets/style/selection.json";
+const Icon = createIconSetFromIcoMoon(selection);
 
 export default class Register extends Component {
     constructor(props) {
@@ -29,8 +32,8 @@ export default class Register extends Component {
             firstname: "Jan",
             lastname: "Kowalski",
             repeatPassword: "123123",
-            query: "",
-            userRoles: []
+            userRole: [],
+            query: ""
         };
     }
     componentDidMount = () => {
@@ -70,7 +73,12 @@ export default class Register extends Component {
                         onChangeText={text => this.setState({email: text})}
                         value={this.state.email}/>
                     <Autocomplete
-                        inputContainerStyle={{borderColor:"transparent"}}
+                        inputContainerStyle={{
+                        borderColor: "transparent"
+                    }}
+                        listStyle={{
+                        backgroundColor: "transparent"
+                    }}
                         underlineColorAndroid={"transparent"}
                         style={{
                         borderRadius: 20,
@@ -84,16 +92,31 @@ export default class Register extends Component {
                         fontSize: 20,
                         alignSelf: "center",
                         marginLeft: 10,
-                        marginRight:10,
-                        borderColor:"transparent"
+                        marginRight: 10,
+                        borderColor: "transparent"
                     }}
+                        placeholder={"Wybierz typ"}
                         data={this.getData()}
-                        defaultValue={this.state.query}
+                        defaultValue={this.state.query.name}
                         onChangeText={text => this.setState({query: text})}
                         renderItem={item => (
-                        <TouchableOpacity onPress={() => this.setState({query: item})}>
-                            <Text>{item.name}</Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={()=>this.setState({query:item})}>
+                        <View
+                            style={{
+                            width: "100%",
+                            height:60,
+                            marginBottom: 10,
+                            backgroundColor: "white",
+                            borderRadius: 20,
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}>
+                            <Text
+                                style={{
+                                fontSize: 20
+                            }}>{item.name}</Text>
+                        </View>
+                            </TouchableOpacity>
                     )}/>
                     <Input
                         placeholder={Language.get("login")}
@@ -133,8 +156,9 @@ export default class Register extends Component {
         }
     }
     register() {
+        const { login, password, firstname, lastname, email} = this.state;
         Api
-            .register(this.state.login, this.state.password, null, this.state.firstname, this.state.lastname, this.state.email)
+            .register(login, password, null, firstname, lastname, email)
             .then(response => {
                 if (response.status === 200) {
                     alert(JSON.stringify(response.message));
@@ -146,6 +170,7 @@ export default class Register extends Component {
                 alert(error);
             })
     }
+
 }
 
 var styles = StyleSheet.create({

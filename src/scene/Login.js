@@ -26,43 +26,54 @@ export default class Login extends Component {
       password: ""
     };
   }
-  componentWillMount = () => {};
 
-  async componentDidMount() {}
   render() {
     return (
       <Container back={false}>
-        <View>
-          <Logo size={150}/>
-          <Input
-            placeholder={Language.get("login")}
-            onChangeText={text => this.setState({login: text})}
-            value={this.state.login}/>
-          <Input
-            placeholder={Language.get("password")}
-            secureTextEntry={true}
-            onChangeText={text => this.setState({password: text})}
-            value={this.state.password}/>
-        </View>
-        <Content contentContainerStyle={styles.buttonContener}>
-          <Button text={Language.get("login")} onPress={() => this.login()}/>
-          <Button text={Language.get("register")} onPress={() => Actions.Register()} />
+        <Logo size={180}/>
+        <Content
+          contentContainerStyle={{
+          width: "100%",
+          height: 200,
+          justifyContent: "space-between"
+        }}>
+          <View style={{
+            marginTop: 35
+          }}>
+            <Input
+              placeholder={Language.get("login")}
+              onChangeText={text => this.setState({login: text})}
+              value={this.state.login}/>
+            <Input
+              placeholder={Language.get("password")}
+              secureTextEntry={true}
+              onChangeText={text => this.setState({password: text})}
+              value={this.state.password}/>
+          </View>
+        </Content>
+        <Content>
+          <View
+            style={{
+            width: "100%",
+            height: 200,
+            justifyContent: "space-around"
+          }}>
+            <Button text={Language.get("login")} onPress={() => this.login()}/>
+            <Button text={Language.get("register")} onPress={() => Actions.Register()}/>
+          </View>
         </Content>
       </Container>
     );
   }
-  async saveloginhaslo(login, password) {}
-  
-  googleLogin = async() => {};
-  facebookLogin = async() => {};
 
   login() {
+    const {login, password} = this.state;
     Api
-      .login(this.state.login, this.state.password)
+      .login(login, password)
       .then(response => {
-        if (response.status === 200){
+        if (response.status === 200) {
           Actions.List();
-        }else{
+        } else {
           alert(response.message);
         }
       })
@@ -80,7 +91,7 @@ var styles = StyleSheet.create({
   buttonContener: {
     width: "100%",
     flex: 1,
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center"
   }
 });
