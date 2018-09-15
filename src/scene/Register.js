@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Alert, TouchableOpacity, Text} from "react-native";
+import {StyleSheet, View, Alert, TouchableOpacity, Text, TextInput} from "react-native";
 
 import {Content} from "native-base";
 
@@ -17,7 +17,7 @@ import Input from "@components/input";
 import Color from "../Color";
 import Language from "../Language";
 import Container from "@components/container";
-import Autocomplete from "react-native-autocomplete-input";
+import Autocomplete from "@components/autocomplete";
 import {createIconSetFromIcoMoon} from "react-native-vector-icons";
 import selection from "../../android/app/src/main/assets/style/selection.json";
 const Icon = createIconSetFromIcoMoon(selection);
@@ -33,7 +33,9 @@ export default class Register extends Component {
             lastname: "Kowalski",
             repeatPassword: "123123",
             userRole: [],
-            query: ""
+            query: "",
+            value: "",
+            items: ["text", "text"]
         };
     }
     componentDidMount = () => {
@@ -73,6 +75,17 @@ export default class Register extends Component {
                         onChangeText={text => this.setState({email: text})}
                         value={this.state.email}/>
                     <Autocomplete
+                        value={this.state.value}
+                        items={this.state.items}
+                        getText={(item) => {
+                        return item
+                    }}
+                        onSelect={(item) => this.setState({value: item})}>
+                        <View>
+                            <TextInput value={this.state.value} onChangeText={text=>this.setState({value:text})}/>
+                        </View>
+                    </Autocomplete>
+                    {/* <Autocomplete
                         inputContainerStyle={{
                         borderColor: "transparent"
                     }}
@@ -100,24 +113,24 @@ export default class Register extends Component {
                         defaultValue={this.state.query.name}
                         onChangeText={text => this.setState({query: text})}
                         renderItem={item => (
-                            <TouchableOpacity onPress={()=>this.setState({query:item})}>
-                        <View
-                            style={{
-                            width: "100%",
-                            height:60,
-                            marginBottom: 10,
-                            backgroundColor: "white",
-                            borderRadius: 20,
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}>
-                            <Text
+                        <TouchableOpacity onPress={() => this.setState({query: item})}>
+                            <View
                                 style={{
-                                fontSize: 20
-                            }}>{item.name}</Text>
-                        </View>
-                            </TouchableOpacity>
-                    )}/>
+                                width: "100%",
+                                height: 60,
+                                marginBottom: 10,
+                                backgroundColor: "white",
+                                borderRadius: 20,
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}>
+                                <Text
+                                    style={{
+                                    fontSize: 20
+                                }}>{item.name}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}/> */}
                     <Input
                         placeholder={Language.get("login")}
                         onChangeText={text => this.setState({login: text})}
@@ -156,7 +169,7 @@ export default class Register extends Component {
         }
     }
     register() {
-        const { login, password, firstname, lastname, email} = this.state;
+        const {login, password, firstname, lastname, email} = this.state;
         Api
             .register(login, password, null, firstname, lastname, email)
             .then(response => {
