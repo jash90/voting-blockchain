@@ -1,5 +1,13 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Alert, TouchableOpacity, Text, TextInput} from "react-native";
+import {
+    StyleSheet,
+    View,
+    Alert,
+    TouchableOpacity,
+    Text,
+    TextInput,
+    FlatList
+} from "react-native";
 
 import {Content} from "native-base";
 
@@ -74,7 +82,30 @@ export default class Register extends Component {
                         placeholder={Language.get("email")}
                         onChangeText={text => this.setState({email: text})}
                         value={this.state.email}/>
-                    <Autocomplete
+                    <Input
+                        placeholder={"wpisz"}
+                        onChangeText={text => this.setState({value: text})}
+                        value={this.state.value}/> {this.state.value.length > 0
+                        ? <FlatList
+                                data={this.state.items}
+                                renderItem={({item}) => {
+                                return (
+                                    <View
+                                        style={{
+                                        width: "90%",
+                                        height: 60,
+                                        borderRadius: 20,
+                                        backgroundColor: "white",
+                                        alignSelf: "center",
+                                        justifyContent: "center",
+                                        alignItems: "center"
+                                    }}>
+                                        <Text>{item}</Text>
+                                    </View>
+                                )
+                            }}/>
+                        : null}
+                    {/* <Autocomplete
                         value={this.state.value}
                         items={this.state.items}
                         getText={(item) => {
@@ -84,7 +115,7 @@ export default class Register extends Component {
                         <View>
                             <TextInput value={this.state.value} onChangeText={text=>this.setState({value:text})}/>
                         </View>
-                    </Autocomplete>
+                    </Autocomplete> */}
                     {/* <Autocomplete
                         inputContainerStyle={{
                         borderColor: "transparent"
