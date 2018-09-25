@@ -1,120 +1,105 @@
-import React, { PureComponent } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
-import { Menu, MenuTrigger, MenuOptions, MenuOption } from "react-native-popup-menu";
-import { Icon } from "native-base";
-import PropTypes from "prop-types";
+import React, {Component} from 'react';
+import {View, Text, TextInput, FlatList} from "react-native";
 
-const CustomMenu = props => {
-    let {
-        style,
-        children,
-        layouts,
-        ...other
-    } = props;
-    let { x, y, width, height } = layouts.triggerLayout;
-
-    let position = {
-        top: y + height,
-        left: x,
-        width: width
-    };
-
-    return (
-        <View {...other} style={[position, styles.contextMenu]}>
-            {children}
-        </View>
-    );
-};
-
-class Autocomplete extends PureComponent {
+class Autocomplete extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: "",
+            items: [
+                {
+                    id: 1,
+                    value: "text"
+                }, {
+                    value: "text",
+                    id: 2
+                }
+            ],
+            loading: false,
+            x: 0,
+            y: 0,
+            height: 0,
+            text: "",
+            focus:false
+        };
+    }
 
     render() {
-        let { value, items, onSelect, getText } = this.props;
-
         return (
-            <Menu renderer={CustomMenu} style={styles.menu}>
-                <MenuTrigger>
-                    {this.props.children}
-                </MenuTrigger>
-                <MenuOptions style={styles.menuOptions}>
-                    <FlatList
-                        style={styles.styleFlatList}
-                        contentContainerStyle={styles.contentFlatList}
-                        data={this.getData()}
-                        renderItem={({ item }) => (
-                            <MenuOption style={styles.menuOption} onSelect={() => onSelect(item)}>
-                                <Text allowFontScaling numberOfLines={1} style={styles.textItem}>
-                                    {getText(item)}
-                                </Text>
-                            </MenuOption>
-                        )}
-                        keyExtractor={(_item, index) => index.toString()} />
-                </MenuOptions>
-            </Menu>
+            <View
+                style={{
+                width: "100%",
+                height: 80
+            }}>
+                <TextInput
+                    onFocus={() => this.setState({ focus: true })}
+                    onBlur={() => this.setState({focus:false})} 
+                    style={{
+                    borderRadius: 20,
+                    width: "90%",
+                    height: 60,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "white",
+                    paddingLeft: 15,
+                    paddingRight: 15,
+                    fontSize: 20,
+                    alignSelf: "center",
+                    margin: 10
+                }}
+                    onLayout={event => {
+                    const layout = event.nativeEvent.layout;
+                    this.setState({x: layout.x, y: layout.y, height: layout.height})
+                }}
+                    placeholder={"email"}
+                    value={this.state.text}
+                    onChangeText={text => this.setState({text})}/> 
+                    {this.state.text.length>0 && this.state.focus
+                    ? <View
+                            style={{
+                            position: "absolute",
+                            top: this.state.y + this.state.height,
+                            left: this.state.x,
+                            zIndex: 999,
+                            width: "90%",
+                            backgroundColor: "#e6e6e6",
+                            overflow: "hidden",
+                            height: 120
+                        }}>
+                            <FlatList
+                            nestedScrollEnabled={true}
+                                keyboardShouldPersistTaps="always"
+                                data={[
+                                "text",
+                                "text",
+                                "text",
+                                "text",
+                                "text",
+                                "text"
+                            ]}
+                                renderItem={({item}) => {
+                                return (
+                                    <View
+                                        style={{
+                                        width: "100%",
+                                        height: 40,
+                                        marginBottom: 10,
+                                        backgroundColor: "white",
+                                        alignItems: "center",
+                                        justifyContent: "center"
+                                    }}>
+                                        <Text
+                                            style={{
+                                            fontSize: 20
+                                        }}>{item}</Text>
+                                    </View>
+                                );
+                            }}/>
+                        </View>
+                    : null}
+            </View>
         );
     }
-    getData() {
-        const { value, items } = this.props;
-        if (value.length > 0) {
-            return items.filter(text => { return String(text).toLowerCase().includes(String(value).toLowerCase()) });
-        } else {
-            return items;
-        }
-    }
 }
-const styles = StyleSheet.create({
-    icon: {
-        marginRight: 5
-    },
-    contextMenu: {
-        borderRadius: 2,
-        backgroundColor: "white",
-        shadowColor: "black",
-        shadowOpacity: 0.3,
-        shadowOffset: {
-            width: 3,
-            height: 3
-        },
-        shadowRadius: 4,
-        elevation: 5
-    },
-    contentFlatList: {
-        width: "100%"
-    },
-    styleFlatList: {
-        width: "100%"
-    },
-    textItem: {
-        flex: 1,
-        padding: 5
-    },
-    menuOption: {
-        width: "100%",
-        backgroundColor: "#fff"
-    },
-    menuOptions: {
-        width: "100%"
-    },
-    textValue: {
-        fontSize: 18,
-        flex: 1
-    },
-    containerTrigger: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 8,
-        width: "100%"
-    },
-    menu: {
-        backgroundColor: "#fff",
-        margin: 10
-    }
-});
-Autocomplete.propTypes = {
-    value: PropTypes.any.isRequired,
-    items: PropTypes.array.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    getText: PropTypes.func.isRequired
-};
+
 export default Autocomplete;

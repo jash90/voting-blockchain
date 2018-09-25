@@ -19,9 +19,7 @@ class Container extends Component {
         return (
             <NContainer>
                 <Head
-                    back={this.props.back == undefined
-                    ? true
-                    : this.props.back}
+                    back={this.props.back}
                     left={this.props.left}
                     leftIcon={this.props.leftIcon}
                     leftPress={this.props.leftPress}

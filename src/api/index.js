@@ -215,13 +215,11 @@ export default class Api {
         }
     }
 
-    static async getAnswers(token, name, questionId, answerId) {
+    static async getAnswers(token, questionId) {
         try {
             let response = await axios.post(answer.getAnswers, {
                 "token": token,
-                "name": name,
                 "questionId": questionId,
-                "answerId": answerId
             });
             return response.data;
 

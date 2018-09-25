@@ -2,11 +2,13 @@ import React, {Component} from "react";
 import {
     StyleSheet,
     View,
+    Dimensions,
     Alert,
     TouchableOpacity,
     Text,
     TextInput,
-    FlatList
+    FlatList,
+    ScrollView
 } from "react-native";
 
 import {Content} from "native-base";
@@ -17,17 +19,20 @@ import axios from "axios";
 
 import Api from "../api/index"
 
-import Logo from "@components/logo";
-import GoogleButton from "@components/google-button";
-import FacebookButton from "@components/facebook-button";
-import Button from "@components/button";
-import Input from "@components/input";
+import {
+    Logo,
+    GoogleButton,
+    FacebookButton,
+    Button,
+    Input,
+    Autocomplete,
+    Container
+} from "../components";
+
 import Color from "../Color";
 import Language from "../Language";
-import Container from "@components/container";
-import Autocomplete from "@components/autocomplete";
 import {createIconSetFromIcoMoon} from "react-native-vector-icons";
-import selection from "../../android/app/src/main/assets/style/selection.json";
+import selection from "../../icons/selection.json";
 const Icon = createIconSetFromIcoMoon(selection);
 
 export default class Register extends Component {
@@ -64,124 +69,49 @@ export default class Register extends Component {
 
     render() {
         return (
-            <Container back={true} leftPress={() => Actions.pop()} scrollView={true}>
+            <Container back={true} leftPress={() => Actions.pop()} scrollView>
                 <View
                     style={{
-                    flex: 1,
-                    justifyContent: "space-around"
+                    width: Dimensions
+                        .get("window")
+                        .width,
+                    height: Dimensions
+                        .get("window")
+                        .height-80
                 }}>
-                    <Input
-                        placeholder={Language.get("firstname")}
-                        onChangeText={text => this.setState({firstname: text})}
-                        value={this.state.firstname}/>
-                    <Input
-                        placeholder={Language.get("lastname")}
-                        onChangeText={text => this.setState({lastname: text})}
-                        value={this.state.lastname}/>
-                    <Input
-                        placeholder={Language.get("email")}
-                        onChangeText={text => this.setState({email: text})}
-                        value={this.state.email}/>
-                    <Input
-                        placeholder={"wpisz"}
-                        onChangeText={text => this.setState({value: text})}
-                        value={this.state.value}/> {this.state.value.length > 0
-                        ? <FlatList
-                                data={this.state.items}
-                                renderItem={({item}) => {
-                                return (
-                                    <View
-                                        style={{
-                                        width: "90%",
-                                        height: 60,
-                                        borderRadius: 20,
-                                        backgroundColor: "white",
-                                        alignSelf: "center",
-                                        justifyContent: "center",
-                                        alignItems: "center"
-                                    }}>
-                                        <Text>{item}</Text>
-                                    </View>
-                                )
-                            }}/>
-                        : null}
-                    {/* <Autocomplete
-                        value={this.state.value}
-                        items={this.state.items}
-                        getText={(item) => {
-                        return item
-                    }}
-                        onSelect={(item) => this.setState({value: item})}>
-                        <View>
-                            <TextInput value={this.state.value} onChangeText={text=>this.setState({value:text})}/>
-                        </View>
-                    </Autocomplete> */}
-                    {/* <Autocomplete
-                        inputContainerStyle={{
-                        borderColor: "transparent"
-                    }}
-                        listStyle={{
-                        backgroundColor: "transparent"
-                    }}
-                        underlineColorAndroid={"transparent"}
-                        style={{
-                        borderRadius: 20,
-                        width: "90%",
-                        height: 60,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "white",
-                        paddingLeft: 15,
-                        paddingRight: 15,
-                        fontSize: 20,
-                        alignSelf: "center",
-                        marginLeft: 10,
-                        marginRight: 10,
-                        borderColor: "transparent"
-                    }}
-                        placeholder={"Wybierz typ"}
-                        data={this.getData()}
-                        defaultValue={this.state.query.name}
-                        onChangeText={text => this.setState({query: text})}
-                        renderItem={item => (
-                        <TouchableOpacity onPress={() => this.setState({query: item})}>
-                            <View
-                                style={{
-                                width: "100%",
-                                height: 60,
-                                marginBottom: 10,
-                                backgroundColor: "white",
-                                borderRadius: 20,
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }}>
-                                <Text
-                                    style={{
-                                    fontSize: 20
-                                }}>{item.name}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}/> */}
-                    <Input
-                        placeholder={Language.get("login")}
-                        onChangeText={text => this.setState({login: text})}
-                        value={this.state.login}/>
-                    <Input
-                        placeholder={Language.get("password")}
-                        secureTextEntry={true}
-                        onChangeText={text => this.setState({password: text})}
-                        value={this.state.password}/>
-                    <Input
-                        placeholder={Language.get("repeatPassword")}
-                        secureTextEntry={true}
-                        onChangeText={text => this.setState({repeatpassword: text})}
-                        value={this.state.repeatpassword}/>
-                    <View
-                        style={{
-                        marginTop: 20,
+                    <View style={{
+                        flex: 70
+                    }}>
+                        <Input
+                            placeholder={Language.get("email")}
+                            onChangeText={text => this.setState({email: text})}
+                            value={this.state.email}/>
+                        <Input
+                            placeholder={Language.get("login")}
+                            onChangeText={text => this.setState({login: text})}
+                            value={this.state.login}/>
+                        <Input
+                            placeholder={Language.get("password")}
+                            secureTextEntry={true}
+                            onChangeText={text => this.setState({password: text})}
+                            value={this.state.password}/>
+                        <Input
+                            placeholder={Language.get("repeatPassword")}
+                            secureTextEntry={true}
+                            onChangeText={text => this.setState({repeatpassword: text})}
+                            value={this.state.repeatpassword}/>
+                    </View>
+                    <View style={{
+                        flex: 30, 
+                        justifyContent: "flex-end",
                         marginBottom: 20
                     }}>
-                        <Button text={Language.get("register")} onPress={() => this.register()}/>
+                        <Button
+                            style={{
+
+                        }}
+                            text={Language.get("register")}
+                            onPress={() => this.register()}/>
                     </View>
                 </View>
             </Container>
@@ -200,9 +130,9 @@ export default class Register extends Component {
         }
     }
     register() {
-        const {login, password, firstname, lastname, email} = this.state;
+        const {login, password, email} = this.state;
         Api
-            .register(login, password, null, firstname, lastname, email)
+            .register(login, password, null, null, null, email)
             .then(response => {
                 if (response.status === 200) {
                     alert(JSON.stringify(response.message));

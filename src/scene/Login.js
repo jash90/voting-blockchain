@@ -9,34 +9,35 @@ import axios from "axios";
 
 import Api from "../api/index"
 
-import Logo from "@components/logo";
-import GoogleButton from "@components/google-button";
-import FacebookButton from "@components/facebook-button";
-import Button from "@components/button";
-import Input from "@components/input";
+import {
+  Logo,
+  GoogleButton,
+  FacebookButton,
+  Button,
+  Input,
+  Container
+} from "../components";
 import Color from "../Color";
 import Language from "../Language";
-import Container from "@components/container";
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: "",
-      password: ""
+      login: "mod",
+      password: "B2r#e4"
     };
   }
 
   render() {
     return (
       <Container back={false}>
-        <Logo size={180}/>
         <Content
           contentContainerStyle={{
           width: "100%",
-          height: 200,
           justifyContent: "space-between"
         }}>
+          <Logo size={180}/>
           <View style={{
             marginTop: 35
           }}>
@@ -50,8 +51,6 @@ export default class Login extends Component {
               onChangeText={text => this.setState({password: text})}
               value={this.state.password}/>
           </View>
-        </Content>
-        <Content>
           <View
             style={{
             width: "100%",
@@ -72,7 +71,28 @@ export default class Login extends Component {
       .login(login, password)
       .then(response => {
         if (response.status === 200) {
-          Actions.List();
+          if (response.data != null) {
+            const {token, userRoleId} = response.data;
+            switch (userRoleId) {
+              case 1:
+                Actions.HomeAdmin({token});
+                break;
+              case 2:
+                Actions.HomeMod({token});
+                break;
+              case 3:
+                Actions.HomeUser({token});
+                break;
+              case 4:
+                Alert.alert("Błąd autoryzacji", "Brak potwierdzenia konta. Skontaktuj się z administratorem.");
+                break;
+              default:
+                Actions.HomeUser({token});
+                break;
+            }
+          } else {
+            throw "Incorrect UserRoleId";
+          }
         } else {
           alert(response.message);
         }

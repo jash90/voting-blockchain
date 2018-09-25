@@ -7,10 +7,10 @@ export default class Button extends Component {
   render() {
     return (
       <TouchableOpacity
-        style={{
+        style={[{
         width: "100%",
         height: 60,
-      }}
+        }, this.props.style]}
         onPress={this.props.onPress}>
         <View
           style={{
@@ -20,8 +20,8 @@ export default class Button extends Component {
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: Color.accentColor,
-          alignSelf: "center"
-        }}>
+          alignSelf: "center",
+          }}>
           <Text
             style={{
             color: "white",
