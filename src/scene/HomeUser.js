@@ -18,6 +18,7 @@ import {Icon, Card} from 'native-base';
 import _ from 'lodash';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import {LocalDate, DateTimeFormatter} from "js-joda";
+import Api from "../api";
 export default class HomeUser extends Component {
     constructor(props) {
         super(props);
@@ -108,7 +109,20 @@ export default class HomeUser extends Component {
             collapsed: true
         }
     };
-
+    componentDidMount = () => {
+        Api
+            .getQuestionsUser(this.props.token)
+            .then(response => {
+                if (response.status === 200) {
+                    this.setState({ questions: response.data });
+                } else if (response.message) {
+                    alert(response.message);
+                } 
+            })
+            .catch(error => {
+                alert(error);
+            })
+    }
     render() {
         return (
             <Container back>
@@ -121,10 +135,7 @@ export default class HomeUser extends Component {
                         keyExtractor={(item, index) => String(index)}
                         data={this
                         .state
-                        .table
-                        .sort((a, b) => {
-                            return this.getEnochDay(b.date) - this.getEnochDay(a.date)
-                        })}
+                        .questions}
                         renderItem={({item}) => <TouchableWithoutFeedback onPress={() => this.selectQuestion(item)}>
                         <Card
                             style={{
@@ -153,7 +164,7 @@ export default class HomeUser extends Component {
                                         fontSize: 18,
                                         marginRight: 10
                                     }}/>
-                                    <Text>{item.date}</Text>
+                                    <Text>{item.publicatedDate}</Text>
                                 </View>
                             </View>
                             <View
@@ -167,49 +178,47 @@ export default class HomeUser extends Component {
                                     style={{
                                     fontSize: 24,
                                     fontWeight: "bold"
-                                }}>{item.question}</Text>
+                                    }}>{item.questionName}</Text>
                             </View>
                             <View
                                 style={{
                                 justifyContent: "center"
                             }}>
-                                {item.selected <= 0
-                                    ? <View
+                                    {item.answerName === undefined
+                                        ? <View
                                             style={{
-                                            flexDirection: "row"
-                                        }}>
+                                                flexDirection: "row"
+                                            }}>
                                             <Text>
                                                 {`Odpowiedź: brak`}
                                             </Text>
                                         </View>
-                                    : <View
-                                        style={{
-                                        flexDirection: "row"
-                                    }}>
-                                        <Text>
-                                            {`Odpowiedź: ${_
-                                                .find(item.answers, ["id", item.selected])
-                                                .text}`}
-                                        </Text>
-                                    </View>}
-                                {item.stats === undefined
-                                    ? <View
+                                        : <View
                                             style={{
-                                            flexDirection: "row"
-                                        }}>
+                                                flexDirection: "row"
+                                            }}>
+                                            <Text>
+                                                {`Odpowiedź: ${item.answerName}`}
+                                            </Text>
+                                        </View>}
+                                    {item.publicatedDateEnd === undefined
+                                        ? <View
+                                            style={{
+                                                flexDirection: "row"
+                                            }}>
                                             <Text>
                                                 Wyniki: brak
                                             </Text>
                                         </View>
-                                    : <View
-                                        style={{
-                                        flexDirection: "row"
-                                    }}>
-                                        <Text>
-                                            Wyniki:
+                                        : <View
+                                            style={{
+                                                flexDirection: "row"
+                                            }}>
+                                            <Text>
+                                                Wyniki:
                                         </Text>
-                                        <MIcon name="equalizer" size={20}/>
-                                    </View>}
+                                            <MIcon name="equalizer" size={20} />
+                                        </View>}
                             </View>
                         </Card>
                     </TouchableWithoutFeedback>}/>

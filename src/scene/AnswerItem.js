@@ -60,7 +60,9 @@ export default class AnswerItem extends Component {
                                 fontSize: 18,
                                 marginRight: 10
                             }}/>
-                            <Text>{this.props.item.date}</Text>
+                            < Text >
+                                {this.props.item.publicatedDate}
+                            </Text>
                         </View>
                     </View>
                     <View
@@ -74,13 +76,13 @@ export default class AnswerItem extends Component {
                             style={{
                             fontSize: 24,
                             fontWeight: "bold"
-                        }}>{this.props.item.question}</Text>
+                        }}>{this.props.item.questionName}</Text>
                     </View>
                     <View
                         style={{
                         justifyContent: "center"
                     }}>
-                        {this.props.item.selected <= 0
+                        {this.props.item.answerName === undefined
                             ? <View
                                     style={{
                                     flexDirection: "row"
@@ -94,12 +96,10 @@ export default class AnswerItem extends Component {
                                 flexDirection: "row"
                             }}>
                                 <Text>
-                                    {`Odpowiedź: ${_
-                                        .find(this.props.item.answers, ["id", this.props.item.selected])
-                                        .text}`}
+                                    {`Odpowiedź: ${this.props.item.answerName}`}
                                 </Text>
                             </View>}
-                        {this.props.item.stats === undefined
+                        {this.props.item.publicatedDateEnd === undefined
                             ? <View
                                     style={{
                                     flexDirection: "row"
@@ -118,7 +118,7 @@ export default class AnswerItem extends Component {
                                 <MIcon name="equalizer" size={20}/>
                             </View>}
                     </View>
-                    {this.props.item.selected == 0
+                    {/* {this.props.item.selected == 0
                         ? <View/>
                         : this.props.item.stats == undefined
                             ? (
@@ -147,7 +147,7 @@ export default class AnswerItem extends Component {
                                 alignItems: 'center',
                                 alignSelf: 'center',
                                 borderRadius: 16
-                            }}/>}
+                            }}/>} */}
                     {/* {Moment().isBefore(Moment(this.props.item.date, "DD.MM.YYYY"))
                         ? <View>
                                 <CheckBoxButton

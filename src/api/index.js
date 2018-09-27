@@ -10,7 +10,8 @@ const auth = {
 };
 
 const question = {
-    getQuestions: base_url + "/questions",
+    getQuestionsUser: base_url + "/questionsUser",
+    getQuestionsMod: base_url + "/questionsMod",
     addQuestion: base_url + "/addquestion",
     editQuestion: base_url + "/editquestion",
     removeQuestion: base_url + "/removequestions"
@@ -79,11 +80,11 @@ export default class Api {
         }
     }
 
-    static async changeUserRequest(token, Id, userRoleId) {
+    static async changeUserRequest(token, id, userRoleId) {
         try {
             let response = await axios.post(auth.changeUserRequest, {
                 "token": token,
-                "Id": Id,
+                "id": id,
                 "userRoleId": userRoleId
             });
             return response.data;
@@ -219,7 +220,7 @@ export default class Api {
         try {
             let response = await axios.post(answer.getAnswers, {
                 "token": token,
-                "questionId": questionId,
+                "questionId": questionId
             });
             return response.data;
 
@@ -272,9 +273,19 @@ export default class Api {
         }
     }
 
-    static async getQuestions(token) {
+    static async getQuestionsMod(token) {
         try {
-            let response = await axios.post(question.getQuestions, {"token": token});
+            let response = await axios.post(question.getQuestionsMod, {"token": token});
+            return response.data;
+
+        } catch (error) {
+            return error;
+        }
+    }
+
+    static async getQuestionsUser(token) {
+        try {
+            let response = await axios.post(question.getQuestionsUser, {"token": token});
             return response.data;
 
         } catch (error) {

@@ -7,7 +7,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    Modal
+    Modal,
+    Alert
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Fab, Button, Icon as NIcon} from 'native-base';
@@ -30,7 +31,7 @@ export default class HomeMod extends Component {
     };
     componentDidMount = () => {
         Api
-            .getQuestions(this.props.token)
+            .getQuestionsMod(this.props.token)
             .then(response => {
                 if (response.status === 200) {
                     this.setState({questions: response.data});
@@ -57,10 +58,7 @@ export default class HomeMod extends Component {
                         keyExtractor={(item, index) => String(index)}
                         data={this
                         .state
-                        .questions
-                        .sort((a, b) => {
-                            return this.getEnochDay(b.publicatedDate) - this.getEnochDay(a.publicatedDate)
-                        })}
+                        .questions}
                         renderItem={({item}) => <TouchableWithoutFeedback onPress={() => this.selectQuestion(item)}>
                         <Card
                             style={{
