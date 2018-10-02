@@ -41,6 +41,7 @@ export default class PickerIcon extends Component {
       <View style={styles.pickerContener}>
         <FlatList
           contentContainerStyle={styles.flatListStyle}
+          keyExtractor={(item,index)=>String(index)}
           data={this.state.transports}
           extraData={this.state.select}
           renderItem={item => item.index == this.state.select

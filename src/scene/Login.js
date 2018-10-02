@@ -47,6 +47,7 @@ export default class Login extends Component {
           <FlatList
             horizontal
             contentContainerStyle={{ flex: 1, justifyContent: "space-evenly" }}
+            keyExtractor={(item,index)=>String(index)}
             data={["admin", "mod", "user"]}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => this.setState({ login: item })}>

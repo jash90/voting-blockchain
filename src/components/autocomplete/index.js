@@ -77,6 +77,7 @@ class Autocomplete extends Component {
                                 "text",
                                 "text"
                             ]}
+                                keyExtractor={(item,index)=>String(index)}
                                 renderItem={({item}) => {
                                 return (
                                     <View
