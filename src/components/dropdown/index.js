@@ -43,6 +43,7 @@ class Dropdown extends PureComponent {
                         style={styles.styleFlatList}
                         contentContainerStyle={styles.contentFlatList}
                         data={items}
+                        keyExtractor={(item,index)=>String(index)}
                         renderItem={({item}) => (
                         <MenuOption style={styles.menuOption} onSelect={() => onSelect(item)}>
                             <Text allowFontScaling numberOfLines={1} style={styles.textItem}>
