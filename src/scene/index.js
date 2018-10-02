@@ -5,12 +5,14 @@ import HomeAdmin from "../scene/HomeAdmin";
 import HomeMod from "../scene/HomeMod";
 import HomeUser from "../scene/HomeUser";
 import QuestionItem from "../scene/QuestionItem";
+import AddUserRole from "../scene/AddUserRole";
 export {
-    Login,
-    Register,
-    AnswerItem,
-    HomeAdmin,
-    HomeMod,
-    HomeUser,
-    QuestionItem
+  Login,
+  Register,
+  AnswerItem,
+  HomeAdmin,
+  HomeMod,
+  HomeUser,
+  QuestionItem,
+  AddUserRole
 };

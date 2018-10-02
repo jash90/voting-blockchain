@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {Icon} from 'native-base';
-class Tabs extends Component {
+export default class Tabs extends Component {
     render() {
         return (
             <View>
@@ -91,5 +91,3 @@ class Tabs extends Component {
         );
     }
 }
-
-export default Tabs;
