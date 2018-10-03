@@ -2,32 +2,17 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  Dimensions,
-  Alert,
-  TouchableOpacity,
-  Text,
-  TextInput,
-  FlatList,
-  ScrollView
+  Dimensions
 } from "react-native";
-import { Content } from "native-base";
 import { Actions } from "react-native-router-flux";
-import axios from "axios";
 import Api from "../api/index";
 import {
-  Logo,
-  GoogleButton,
-  FacebookButton,
   Button,
   Input,
-  Autocomplete,
   Container
 } from "../components";
 import Color from "../Color";
 import Language from "../Language";
-import { createIconSetFromIcoMoon } from "react-native-vector-icons";
-import selection from "../../icons/selection.json";
-const Icon = createIconSetFromIcoMoon(selection);
 
 export default class Register extends Component {
   constructor(props) {

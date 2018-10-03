@@ -9,12 +9,9 @@ import {
 } from "react-native";
 import { Content } from "native-base";
 import { Actions } from "react-native-router-flux";
-import axios from "axios";
 import Api from "../api/index";
 import {
   Logo,
-  GoogleButton,
-  FacebookButton,
   Button,
   Input,
   Container
