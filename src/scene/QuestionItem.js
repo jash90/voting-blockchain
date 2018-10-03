@@ -1,19 +1,11 @@
 import React, { Component } from "react";
 import {
   View,
-  Image,
-  FlatList,
   Text,
-  TouchableHighlight,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Modal,
-  Dimensions
+  StyleSheet
 } from "react-native";
-import * as Animatable from "react-native-animatable";
-import { Card, SwipeRow, Icon as NIcon, List } from "native-base";
-import { Container, Button, CheckBoxButton, Fab } from "../components";
+import { Card } from "native-base";
+import { Container, Fab } from "../components";
 import _ from "lodash";
 import {
   LineChart,
@@ -22,9 +14,6 @@ import {
   ProgressChart,
   ContributionGraph
 } from "react-native-chart-kit";
-import Color from "../Color";
-import "babel-polyfill";
-import Language from "../Language";
 import Api from "../api";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { SwipeListView } from "react-native-swipe-list-view";

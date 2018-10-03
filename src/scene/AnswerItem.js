@@ -1,24 +1,14 @@
 import React, { Component } from "react";
 import {
   View,
-  Image,
-  FlatList,
   Text,
-  TouchableHighlight,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  Dimensions
+  StyleSheet
 } from "react-native";
-import * as Animatable from "react-native-animatable";
-import { Card, Fab } from "native-base";
-import { Container, Button, CheckBoxButton } from "../components";
-import { Actions } from "react-native-router-flux";
-import Accordion from "react-native-collapsible/Accordion";
+import { Card } from "native-base";
+import { Container } from "../components";
 import { Icon } from "native-base";
 import MIcon from "react-native-vector-icons/MaterialIcons";
 import _ from "lodash";
-import Moment from "moment";
 import {
   LineChart,
   BarChart,
@@ -26,9 +16,6 @@ import {
   ProgressChart,
   ContributionGraph
 } from "react-native-chart-kit";
-import Color from "../Color";
-import "babel-polyfill";
-import Language from "../Language";
 import { observer, inject } from "mobx-react";
 
 @inject("authStore")
