@@ -33,10 +33,13 @@ export default class AddUserRole extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userRoles: []
+      name: "",
+      login: true,
+      register: true
     };
   }
   render() {
+    let { name, login, register } = this.state;
     return (
       <Container back>
         <View>
@@ -51,6 +54,8 @@ export default class AddUserRole extends Component {
             <TextInput
               style={{ height: 40, fontSize: 20 }}
               placeholder={"Nazwa roli"}
+              value={name}
+              onChangeText={name => this.setState({ name })}
             />
           </Card>
           <Card
@@ -82,7 +87,8 @@ export default class AddUserRole extends Component {
                   justifyContent: "center",
                   alignItems: "center"
                 }}
-                value={true}
+                value={login}
+                onValueChange={login => this.setState({ login })}
               />
             </View>
           </Card>
@@ -115,34 +121,55 @@ export default class AddUserRole extends Component {
                   justifyContent: "center",
                   alignItems: "center"
                 }}
-                value={true}
+                value={register}
+                onValueChange={register => this.setState({ register })}
               />
             </View>
           </Card>
-          <Card
-            style={{
-              width: "90%",
-              padding: 10,
-              borderRadius: 20,
-              alignSelf: "center",
-              backgroundColor: "#000",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <View
+          <TouchableOpacity onPress={() => this.onSave()}>
+            <Card
               style={{
-                height: 40,
+                width: "90%",
+                padding: 10,
+                borderRadius: 20,
+                alignSelf: "center",
+                backgroundColor: "#000",
                 justifyContent: "center",
                 alignItems: "center"
               }}
             >
-              <Text style={{ color: "#fff", fontSize: 18 }}>Zapisz</Text>
-            </View>
-          </Card>
+              <View
+                style={{
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 18 }}>Zapisz</Text>
+              </View>
+            </Card>
+          </TouchableOpacity>
         </View>
       </Container>
     );
+  }
+  onSave() {
+    let { name, login, register } = this.state;
+    let { authStore } = this.props;
+    Api.addUserRole(authStore.getToken(), name, login, register)
+      .then(response => {
+        if (response.status === 200) {
+          alert(`Rola ${name} została dodana.`);
+          Actions.HomeAdmin();
+        } else if (response.message) {
+          alert(response.message);
+        } else {
+          alert(JSON.stringify(response.message.detail));
+        }
+      })
+      .catch(error => {
+        alert(error);
+      });
   }
 }
 const styles = StyleSheet.create({});

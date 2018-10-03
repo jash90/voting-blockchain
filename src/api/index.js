@@ -94,7 +94,7 @@ export default class Api {
         }
     }
 
-    static async addUserRole(name, login, register, token) {
+    static async addUserRole(token, name, login, register) {
         try {
             let response = await axios.post(userRole.addUserRole, {
                 "token": token,
