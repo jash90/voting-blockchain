@@ -6,4 +6,3 @@ import initializerDefineProperty from "@babel/runtime/helpers/es6/initializerDef
 Object.assign(babelHelpers, {applyDecoratedDescriptor, initializerDefineProperty});
 
 AppRegistry.registerComponent(appName, () => require("./App").default);
-//test.
