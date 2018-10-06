@@ -1,29 +1,22 @@
 import React, { Component } from "react";
 import {
   View,
-  Image,
   FlatList,
   Text,
-  Toa,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Modal
+  TouchableWithoutFeedback
 } from "react-native";
-import * as Animatable from "react-native-animatable";
-import { Button, Switch } from "native-base";
-import { Container, CheckBoxButton } from "../components";
+import { Switch } from "native-base";
+import { Container, Fab } from "../components";
 import { Actions } from "react-native-router-flux";
-import Accordion from "react-native-collapsible/Accordion";
 import { Card } from "native-base";
 import _ from "lodash";
 import MIcon from "react-native-vector-icons/MaterialIcons";
-import { Icon as NIcon } from "native-base";
 import Api from "../api";
 import { createIconSetFromIcoMoon } from "react-native-vector-icons";
 import selection from "../../icons/selection.json";
 const Icon = createIconSetFromIcoMoon(selection);
-import Fab from "@components/fab";
 import { observer, inject } from "mobx-react";
 
 @inject("authStore")
