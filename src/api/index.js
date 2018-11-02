@@ -109,14 +109,14 @@ export default class Api {
         }
     }
 
-    static async editUserRole(name, login, register, userRoleId, token) {
+    static async editUserRole(token, name, login, register, userRoleId) {
         try {
             let response = await axios.post(userRole.editUserRole, {
                 "token": token,
                 "name": name,
                 "login": login,
-                "userRoleId": userRoleId,
-                "register": register
+                "register": register,
+                "userRoleId":userRoleId
             });
             return response.data;
 
@@ -141,22 +141,11 @@ export default class Api {
                 "userRoleId": userRoleId,
                 "token": token
             });
+            console.log(response);
             return response.data;
 
         } catch (error) {
-            return error;
-        }
-    }
-
-    static async removeUserRole(userRoleId, token) {
-        try {
-            let response = await axios.post(userRole.removeUserRole, {
-                "userRoleId": userRoleId,
-                "token": token
-            });
-            return response.data;
-
-        } catch (error) {
+            console.log(error);
             return error;
         }
     }

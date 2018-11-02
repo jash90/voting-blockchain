@@ -12,6 +12,7 @@ import Input from "@components/input";
 import Logo from "@components/logo";
 import PickerIcon from "@components/picker-icon";
 import Separator from "@components/separator";
+import ProgressModal from "@components/progress-modal";
 export {
     Autocomplete,
     Bar,
@@ -26,5 +27,6 @@ export {
     Input,
     Logo,
     PickerIcon,
-    Separator
+    Separator,
+    ProgressModal
 };

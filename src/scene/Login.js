@@ -1,33 +1,31 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
   Alert,
   FlatList,
   Text,
-  TouchableOpacity
-} from "react-native";
-import { Content } from "native-base";
-import { Actions } from "react-native-router-flux";
-import Api from "../api/index";
-import {
-  Logo,
-  Button,
-  Input,
-  Container
-} from "../components";
-import Color from "../Color";
-import Language from "../Language";
-import { observer, inject } from "mobx-react";
+  TouchableOpacity,
+  Modal,
+  ActivityIndicator
+} from 'react-native';
+import { Content, Card } from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import Api from '../api/index';
+import { Logo, Button, Input, Container, ProgressModal } from '../components';
+import Color from '../Color';
+import Language from '../Language';
+import { observer, inject } from 'mobx-react';
 
-@inject("authStore")
+@inject('authStore')
 @observer
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: "mod",
-      password: "B2r#e4"
+      login: 'mod',
+      password: 'B2r#e4',
+      loading: false
     };
   }
 
@@ -36,26 +34,24 @@ export default class Login extends Component {
       <Container back={false}>
         <Content
           contentContainerStyle={{
-            width: "100%",
-            justifyContent: "space-between"
-          }}
-        >
+            width: '100%',
+            justifyContent: 'space-between'
+          }}>
           <Logo size={180} />
           <FlatList
             horizontal
-            contentContainerStyle={{ flex: 1, justifyContent: "space-evenly" }}
-            keyExtractor={(item,index)=>String(index)}
-            data={["admin", "mod", "user"]}
+            contentContainerStyle={{ flex: 1, justifyContent: 'space-evenly' }}
+            keyExtractor={(item, index) => String(index)}
+            data={['admin', 'mod', 'user']}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => this.setState({ login: item })}>
                 <View
                   style={{
-                    backgroundColor: "white",
+                    backgroundColor: 'white',
                     borderRadius: 20,
                     paddingVertical: 10,
                     paddingHorizontal: 20
-                  }}
-                >
+                  }}>
                   <Text>{item}</Text>
                 </View>
               </TouchableOpacity>
@@ -63,12 +59,12 @@ export default class Login extends Component {
           />
           <View>
             <Input
-              placeholder={Language.get("login")}
+              placeholder={Language.get('login')}
               onChangeText={text => this.setState({ login: text })}
               value={this.state.login}
             />
             <Input
-              placeholder={Language.get("password")}
+              placeholder={Language.get('password')}
               secureTextEntry={true}
               onChangeText={text => this.setState({ password: text })}
               value={this.state.password}
@@ -76,17 +72,17 @@ export default class Login extends Component {
           </View>
           <View
             style={{
-              width: "100%",
+              width: '100%',
               height: 200,
-              justifyContent: "space-around"
-            }}
-          >
-            <Button text={Language.get("login")} onPress={() => this.login()} />
+              justifyContent: 'space-around'
+            }}>
+            <Button text={Language.get('login')} onPress={() => this.login()} />
             <Button
-              text={Language.get("register")}
+              text={Language.get('register')}
               onPress={() => Actions.Register()}
             />
           </View>
+          <ProgressModal visible={this.state.loading} text="Logowanie" />
         </Content>
       </Container>
     );
@@ -94,43 +90,51 @@ export default class Login extends Component {
 
   login() {
     const { login, password } = this.state;
-    const {authStore} = this.props;
-    Api.login(login, password)
-      .then(response => {
-        if (response.status === 200) {
-          if (response.data != null) {
-            const { token, userRoleId } = response.data;
-            authStore.setToken(token);
-            switch (userRoleId) {
-              case 1:
-                Actions.HomeAdmin();
-                break;
-              case 2:
-                Actions.HomeMod();
-                break;
-              case 3:
-                Actions.HomeUser();
-                break;
-              case 4:
-                Alert.alert(
-                  "Błąd autoryzacji",
-                  "Brak potwierdzenia konta. Skontaktuj się z administratorem."
-                );
-                break;
-              default:
-                Actions.HomeUser();
-                break;
+    const { authStore } = this.props;
+    this.setState({ loading: true });
+    try {
+      Api.login(login, password)
+        .then(response => {
+          this.setState({ loading: false });
+          if (response.status === 200) {
+            if (response.data != null) {
+              const { token, userRoleId } = response.data;
+              authStore.setToken(token);
+              switch (userRoleId) {
+                case 1:
+                  Actions.HomeAdmin();
+                  break;
+                case 2:
+                  Actions.HomeMod();
+                  break;
+                case 3:
+                  Actions.HomeUser();
+                  break;
+                case 4:
+                  Alert.alert(
+                    'Błąd autoryzacji',
+                    'Brak potwierdzenia konta. Skontaktuj się z administratorem.'
+                  );
+                  break;
+                default:
+                  Actions.HomeUser();
+                  break;
+              }
+            } else {
+              throw 'Incorrect UserRoleId';
             }
           } else {
-            throw "Incorrect UserRoleId";
+            alert(response.message);
           }
-        } else {
-          alert(response.message);
-        }
-      })
-      .catch(error => {
-        alert(error);
-      });
+        })
+        .catch(error => {
+          alert(error);
+          this.setState({ loading: false });
+        });
+    } catch (error) {
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 }
 
@@ -140,9 +144,9 @@ var styles = StyleSheet.create({
     backgroundColor: Color.primaryColor
   },
   buttonContener: {
-    width: "100%",
+    width: '100%',
     flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center"
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 });

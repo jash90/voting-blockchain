@@ -4,13 +4,15 @@ import {
   Text,
   Switch,
   StyleSheet,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import { Container } from "../components";
 import { Card, } from "native-base";
 import _ from "lodash";
 import { observer, inject } from "mobx-react";
-
+import Api from '../api';
+import { Actions } from 'react-native-router-flux';
 @inject("authStore")
 @observer
 export default class AddUserRole extends Component {
