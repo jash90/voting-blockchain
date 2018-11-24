@@ -8,7 +8,9 @@ import {
   HomeMod,
   HomeUser,
   QuestionItem,
-  AddUserRole
+  AddUserRole,
+  AddQuestion,
+  ResultQuestion
 } from "./src/scene";
 import { MenuProvider } from "react-native-popup-menu";
 import store from "./src/store";
@@ -28,6 +30,8 @@ export default class App extends Component {
             <Scene key="HomeMod" component={HomeMod} hideNavBar />
             <Scene key="HomeUser" component={HomeUser} hideNavBar />
             <Scene key="AddUserRole" component={AddUserRole} hideNavBar />
+            <Scene key="AddQuestion" component={AddQuestion} hideNavBar />
+            <Scene key="ResultQuestion" component={ResultQuestion} hideNavBar />
           </Stack>
         </Router>
         </Provider>

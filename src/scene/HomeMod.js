@@ -1,20 +1,23 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   View,
   FlatList,
   Text,
   StyleSheet,
-  TouchableWithoutFeedback
-} from "react-native";
-import { Container, Fab } from "../components";
-import { Actions } from "react-native-router-flux";
-import { Icon, Card } from "native-base";
-import _ from "lodash";
-import { DateTimeFormatter, LocalDate } from "js-joda";
-import Api from "../api";
-import { observer, inject } from "mobx-react";
-
-@inject("authStore")
+  TouchableWithoutFeedback,
+  TouchableOpacity
+} from 'react-native';
+import { Container, Fab } from '../components';
+import { Actions } from 'react-native-router-flux';
+import { Card } from 'native-base';
+import _ from 'lodash';
+import { DateTimeFormatter, LocalDate } from 'js-joda';
+import Api from '../api';
+import { observer, inject } from 'mobx-react';
+import { Functions } from '../utils';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { isStrictModeEnabled } from 'mobx';
+@inject('authStore')
 @observer
 export default class HomeMod extends Component {
   constructor(props) {
@@ -44,159 +47,115 @@ export default class HomeMod extends Component {
   render() {
     return (
       <Container back>
-        <View
-          style={{
-            width: "100%",
-            height: "100%"
-          }}
-        >
-          <FlatList
-            keyExtractor={(item, index) => String(index)}
-            data={this.state.questions}
-            renderItem={({ item }) => (
-              <TouchableWithoutFeedback
-                onPress={() => this.selectQuestion(item)}
-              >
-                <Card
+        <FlatList
+          keyExtractor={(item, index) => String(index)}
+          data={this.state.questions.sort((a, b) => {
+            return b.publicated - a.publicated;
+          })}
+          renderItem={({ item }) => (
+            <TouchableWithoutFeedback onPress={() => this.selectQuestion(item)}>
+              <Card
+                style={{
+                  flex: 1,
+                  width: '90%',
+                  alignSelf: 'center',
+                  padding: 10,
+                  borderRadius: 20,
+                  borderColor: 'grey',
+                  borderWidth: 1
+                }}>
+                <View
                   style={{
-                    flex: 1,
-                    width: "90%",
-                    alignSelf: "center",
-                    padding: 10,
-                    borderRadius: 20
-                  }}
-                >
-                  <View
-                    style={{
-                      height: 20,
-                      flexDirection: "row",
-                      justifyContent: "space-between"
-                    }}
-                  >
-                    <Text>Pytanie</Text>
-                  </View>
-                  <View
-                    style={{
-                      height: 60,
-                      flexDirection: "column",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        fontSize: 24,
-                        fontWeight: "bold"
-                      }}
-                    >
-                      {item.name}
-                    </Text>
-                  </View>
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 10
+                  }}>
                   <Text
                     style={{
-                      fontSize: 10
-                    }}
-                  >
-                    {`Wiele odpowiedzi: ${item.multiAnswer ? "Tak" : "Nie"}`}
+                      flex: 1,
+                      fontSize: 24,
+                      textAlign: 'center',
+                      fontWeight: 'bold'
+                    }}>
+                    {item.name}
                   </Text>
-                  <View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 10
-                        }}
-                      >
-                        {"Data rozpoczęcia"}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row"
-                        }}
-                      >
-                        <Icon
-                          name="calendar"
-                          style={{
-                            fontSize: 10,
-                            marginRight: 5
-                          }}
-                        />
-                        <Text
-                          style={{
-                            width: 55,
-                            fontSize: 10,
-                            textAlign: "center"
-                          }}
-                        >
-                          {this.getDate(item.publicatedDate)}
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 10
-                        }}
-                      >
-                        {"Data zakończenia"}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row"
-                        }}
-                      >
-                        <Icon
-                          name="calendar"
-                          style={{
-                            fontSize: 10,
-                            marginRight: 5
-                          }}
-                        />
-                        <Text
-                          style={{
-                            width: 55,
-                            fontSize: 10,
-                            textAlign: "center"
-                          }}
-                        >
-                          {this.getDate(item.publicatedDateEnd)}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </Card>
-              </TouchableWithoutFeedback>
-            )}
-          />
-          <Fab icon />
-        </View>
+                  <Icon
+                    style={{ paddingLeft: 10, alignItems: 'center' }}
+                    name={this.getIcon(item.publicatedDateEnd)}
+                    size={27}
+                    adjustsFontSizeToFit
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 10,
+                    paddingTop: 15
+                  }}>
+                  <Text>{'Data zakończenia:'}</Text>
+                  <Text>{Functions.getDate(item.publicatedDateEnd)}</Text>
+                </View>
+                {this.renderResult(item)}
+              </Card>
+            </TouchableWithoutFeedback>
+          )}
+        />
+        <Fab icon onPress={() => this.addQuestion()} />
       </Container>
     );
   }
-  getDate(date) {
-    if (date) {
-      return new Date(date).toLocaleDateString();
-    } else {
-      return "brak";
+
+  renderResult(item) {
+    if (item.publicatedDateEnd) {
+      return (
+        <TouchableOpacity onPress={() => this.visibleResult(item)}>
+          <View
+            style={{
+              flex: 1,
+              alignSelf: 'center',
+              padding: 10,
+              borderRadius: 20,
+              backgroundColor: 'grey',
+              borderColor: 'black',
+              borderWidth: 1,
+              paddingHorizontal: 60,
+              marginTop: 20,
+              marginBottom: 5
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontWeight: 'bold'
+              }}>
+              Wyniki
+            </Text>
+          </View>
+        </TouchableOpacity>
+      );
     }
   }
-  getEnochDay(date) {
-    return LocalDate.parse(
-      new Date(date).toLocaleDateString(),
-      DateTimeFormatter.ofPattern("dd.MM.yyyy")
-    ).toEpochDay();
+
+  getIcon(date) {
+    if (date) {
+      return 'lock';
+    }
+    return 'edit';
   }
+
   selectQuestion(item) {
-    Actions.QuestionItem({ question: item });
+    if (!item.publicated) {
+      Actions.AddQuestion({ question: item });
+    }
+  }
+
+  addQuestion() {
+    Actions.AddQuestion();
+  }
+
+  visibleResult(item) {
+    Actions.ResultQuestion({ question: item });
   }
 }
 

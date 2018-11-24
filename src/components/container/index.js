@@ -34,7 +34,7 @@ class Container extends Component {
         );
     }
     renderChildren() {
-        if (this.props.scrollView) {
+        if (this.props.scroll) {
             return (
                 <Content
                     style={styles.fullStyle}>

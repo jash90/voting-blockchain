@@ -1,33 +1,25 @@
-import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Dimensions
-} from "react-native";
-import { Actions } from "react-native-router-flux";
-import Api from "../api/index";
-import {
-  Button,
-  Input,
-  Container
-} from "../components";
-import Color from "../Color";
-import Language from "../Language";
+import React, { Component } from 'react';
+import { StyleSheet, View, Dimensions } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import Api from '../api/index';
+import { Button, Input, Container } from '../components';
+import Color from '../Color';
+import Language from '../Language';
 
 export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: "jan",
-      password: "123123",
-      email: "jan@kowalski.pl",
-      firstname: "Jan",
-      lastname: "Kowalski",
-      repeatPassword: "123123",
+      login: 'jan',
+      password: '123123',
+      email: 'jan@kowalski.pl',
+      firstname: 'Jan',
+      lastname: 'Kowalski',
+      repeatPassword: '123123',
       userRole: [],
-      query: "",
-      value: "",
-      items: ["text", "text"]
+      query: '',
+      value: '',
+      items: ['text', 'text']
     };
   }
   componentDidMount = () => {
@@ -47,36 +39,34 @@ export default class Register extends Component {
 
   render() {
     return (
-      <Container back={true} leftPress={() => Actions.pop()} scrollView>
+      <Container back leftPress={() => Actions.pop()} scroll>
         <View
           style={{
-            width: Dimensions.get("window").width,
-            height: Dimensions.get("window").height - 80
-          }}
-        >
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height - 80
+          }}>
           <View
             style={{
               flex: 70
-            }}
-          >
+            }}>
             <Input
-              placeholder={Language.get("email")}
+              placeholder={Language.get('email')}
               onChangeText={text => this.setState({ email: text })}
               value={this.state.email}
             />
             <Input
-              placeholder={Language.get("login")}
+              placeholder={Language.get('login')}
               onChangeText={text => this.setState({ login: text })}
               value={this.state.login}
             />
             <Input
-              placeholder={Language.get("password")}
+              placeholder={Language.get('password')}
               secureTextEntry={true}
               onChangeText={text => this.setState({ password: text })}
               value={this.state.password}
             />
             <Input
-              placeholder={Language.get("repeatPassword")}
+              placeholder={Language.get('repeatPassword')}
               secureTextEntry={true}
               onChangeText={text => this.setState({ repeatpassword: text })}
               value={this.state.repeatpassword}
@@ -85,13 +75,12 @@ export default class Register extends Component {
           <View
             style={{
               flex: 30,
-              justifyContent: "flex-end",
+              justifyContent: 'flex-end',
               marginBottom: 20
-            }}
-          >
+            }}>
             <Button
               style={{}}
-              text={Language.get("register")}
+              text={Language.get('register')}
               onPress={() => this.register()}
             />
           </View>
@@ -133,9 +122,9 @@ var styles = StyleSheet.create({
     backgroundColor: Color.primaryColor
   },
   buttonContener: {
-    width: "100%",
+    width: '100%',
     flex: 1,
-    justifyContent: "space-evenly",
-    alignItems: "center"
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   }
 });

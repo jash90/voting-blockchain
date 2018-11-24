@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export default class Bar extends Component {
   render() {
     return (
-      <View style={{ flexDirection: "column" }}>
+      <View style={{ flexDirection: "column", justifyContent:"center", alignItems:"center" }}>
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
@@ -13,7 +13,7 @@ export default class Bar extends Component {
               borderColor: this.props.fill,
               borderWidth: 4,
               width: Dimensions.get("window").width * 0.55,
-              height: this.props.height
+              height: this.props.height,
             }}
           />
           <View
@@ -27,10 +27,12 @@ export default class Bar extends Component {
                   0.55 *
                   this.props.procentage) /
                 100,
-              height: this.props.height
+              height: this.props.height,
+              justifyContent:"center",
+              alignSelf:"center" 
             }}
           />
-          <View style={{ justifyContent: "center", marginLeft: 20 }}>
+          <View style={{ marginLeft: 20 }}>
             <Text
               style={{
                 fontWeight: "bold",

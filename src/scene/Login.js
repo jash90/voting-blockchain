@@ -31,7 +31,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <Container back={false}>
+      <Container>
         <Content
           contentContainerStyle={{
             width: '100%',

@@ -1,4 +1,4 @@
-import Functionsd from "./Functions";
+import Functions from "./Functions";
 export {
     Functions
 };
